@@ -11,10 +11,11 @@ export default function Summary() {
     answers = [],
     expectedAnswers = [],
   } = location.state || {};
-
+  const [progress, setProgress] = useState(0);
   const [evaluations, setEvaluations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const hasEvaluated = useRef(false);
 
   useEffect(() => {
@@ -24,16 +25,25 @@ export default function Summary() {
         setIsLoading(false);
         return;
       }
-
+    
       try {
         setIsLoading(true);
         setError(null);
         hasEvaluated.current = true; // Mark as evaluated
         
         console.log("Starting evaluation...");
-        const results = await evaluateAll(questions, answers, expectedAnswers);
-        console.log("Evaluation completed");
         
+        // Start AI evaluation
+        const aiPromise = evaluateAll(questions, answers, expectedAnswers);
+        
+        // Add minimum delay of 8 seconds
+        const delayPromise = new Promise(resolve => setTimeout(resolve, 8000));
+        
+        // Wait for both AI and delay to complete
+        const results = await aiPromise;
+        await delayPromise; // Ensure minimum 8 seconds
+        
+        console.log("Evaluation completed");
         setEvaluations(results);
       } catch (err) {
         console.error("Error fetching evaluations:", err);
@@ -47,38 +57,88 @@ export default function Summary() {
     fetchEvaluations();
   }, [questions, answers, expectedAnswers]);
 
-  const goBack = () => navigate("/dashboard");
+  const goBack = () => navigate("/career-options");
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20 px-6 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-700">Evaluating your answers...</h2>
-          <p className="text-gray-500 mt-2">This may take a few moments</p>
+      <div style={{
+        minHeight: '100vh',
+        backgroundColor: '#f8f9fa',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        padding: '20px'
+      }}>
+        {/* Large Loading Spinner */}
+        <div style={{
+          width: '100px',
+          height: '100px',
+          border: '8px solid #e9ecef',
+          borderTop: '8px solid #007bff',
+          borderRadius: '50%',
+          marginBottom: '30px',
+          animation: 'spin 1s linear infinite'
+        }}></div>
+        
+        <h1 style={{
+          fontSize: '36px',
+          color: '#2c3e50',
+          marginBottom: '20px',
+          fontWeight: 'bold',
+          textAlign: 'center'
+        }}>AI is Analyzing Your Answers</h1>
+        
+        <p style={{
+          fontSize: '20px',
+          color: '#6c757d',
+          marginBottom: '30px',
+          textAlign: 'center'
+        }}>Please wait 8 seconds while AI generates your feedback...</p>
+        
+        {/* Progress Bar */}
+        <div style={{
+          width: '400px',
+          height: '8px',
+          backgroundColor: '#e9ecef',
+          borderRadius: '4px',
+          marginBottom: '20px',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#007bff',
+            borderRadius: '4px',
+            animation: 'progress 8s linear infinite'
+          }}></div>
         </div>
+        
+        {/* Countdown Timer */}
+        <div style={{
+          fontSize: '18px',
+          color: '#007bff',
+          fontWeight: 'bold'
+        }}>
+          Generating AI Response...
+        </div>
+        
+        {/* CSS Animations */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            @keyframes progress {
+              0% { transform: translateX(-100%); }
+              100% { transform: translateX(100%); }
+            }
+          `
+        }} />
       </div>
     );
   }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 pt-20 px-6 flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Evaluation Error</h2>
-          <p className="text-gray-500 mb-6">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-50 pt-20 px-6">
       <h1 className="text-3xl font-bold text-center text-blue-700 mb-10">

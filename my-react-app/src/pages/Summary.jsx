@@ -20,42 +20,36 @@ export default function Summary() {
 
   useEffect(() => {
     const fetchEvaluations = async () => {
-      // Prevent multiple calls
-      if (hasEvaluated.current || questions.length === 0) {
-        setIsLoading(false);
-        return;
-      }
-    
+      // Always show loading when component mounts
+      setIsLoading(true);
+      setError(null);
+      hasEvaluated.current = true;
+      
+      console.log("Starting evaluation...");
+      
       try {
-        setIsLoading(true);
-        setError(null);
-        hasEvaluated.current = true; // Mark as evaluated
-        
-        console.log("Starting evaluation...");
-        
         // Start AI evaluation
         const aiPromise = evaluateAll(questions, answers, expectedAnswers);
         
-        // Add minimum delay of 8 seconds
+        // Add minimum delay of 9 seconds
         const delayPromise = new Promise(resolve => setTimeout(resolve, 8000));
         
         // Wait for both AI and delay to complete
         const results = await aiPromise;
-        await delayPromise; // Ensure minimum 8 seconds
+        await delayPromise; // Ensure minimum 9 seconds
         
         console.log("Evaluation completed");
         setEvaluations(results);
       } catch (err) {
         console.error("Error fetching evaluations:", err);
         setError("Failed to load evaluations. Please try again.");
-        hasEvaluated.current = false; // Reset on error so user can retry
       } finally {
         setIsLoading(false);
       }
     };
-
+  
     fetchEvaluations();
-  }, [questions, answers, expectedAnswers]);
+  }, []); // Only run once when component mounts
 
   const goBack = () => navigate("/career-options");
 
@@ -63,7 +57,7 @@ export default function Summary() {
     return (
       <div style={{
         minHeight: '100vh',
-        backgroundColor: '#f8f9fa',
+        backgroundColor: '#f0f0f0',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -72,53 +66,54 @@ export default function Summary() {
       }}>
         {/* Large Loading Spinner */}
         <div style={{
-          width: '100px',
-          height: '100px',
-          border: '8px solid #e9ecef',
-          borderTop: '8px solid #007bff',
+          width: '120px',
+          height: '120px',
+          border: '10px solid #ddd',
+          borderTop: '10px solid #007bff',
           borderRadius: '50%',
-          marginBottom: '30px',
+          marginBottom: '40px',
           animation: 'spin 1s linear infinite'
         }}></div>
         
         <h1 style={{
-          fontSize: '36px',
-          color: '#2c3e50',
+          fontSize: '40px',
+          color: '#333',
           marginBottom: '20px',
           fontWeight: 'bold',
           textAlign: 'center'
-        }}>AI is Analyzing Your Answers</h1>
+        }}>AI is Processing Your Interview</h1>
         
         <p style={{
-          fontSize: '20px',
-          color: '#6c757d',
-          marginBottom: '30px',
+          fontSize: '22px',
+          color: '#666',
+          marginBottom: '40px',
           textAlign: 'center'
-        }}>Please wait 8 seconds while AI generates your feedback...</p>
+        }}>Please wait few seconds while AI analyzes your answers...</p>
         
         {/* Progress Bar */}
         <div style={{
-          width: '400px',
-          height: '8px',
-          backgroundColor: '#e9ecef',
-          borderRadius: '4px',
-          marginBottom: '20px',
+          width: '500px',
+          height: '10px',
+          backgroundColor: '#ddd',
+          borderRadius: '5px',
+          marginBottom: '30px',
           overflow: 'hidden'
         }}>
           <div style={{
             width: '100%',
             height: '100%',
             backgroundColor: '#007bff',
-            borderRadius: '4px',
-            animation: 'progress 8s linear infinite'
+            borderRadius: '5px',
+            animation: 'progress 9s linear infinite'
           }}></div>
         </div>
         
-        {/* Countdown Timer */}
+        {/* Loading Text */}
         <div style={{
-          fontSize: '18px',
+          fontSize: '20px',
           color: '#007bff',
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          animation: 'pulse 2s infinite'
         }}>
           Generating AI Response...
         </div>
@@ -133,6 +128,10 @@ export default function Summary() {
             @keyframes progress {
               0% { transform: translateX(-100%); }
               100% { transform: translateX(100%); }
+            }
+            @keyframes pulse {
+              0%, 100% { opacity: 0.7; }
+              50% { opacity: 1; }
             }
           `
         }} />

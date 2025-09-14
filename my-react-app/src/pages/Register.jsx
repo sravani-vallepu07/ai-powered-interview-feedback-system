@@ -9,7 +9,7 @@ export default function Register() {
           routing="path"
           signInUrl="/login"
           // Remove the fallbackRedirectUrl prop
-          forceRedirectUrl="/login"
+          forceRedirectUrl="/career-options"
           // 👈 if you want to *always* override Clerk’s redirect
           appearance={{
             layout: {

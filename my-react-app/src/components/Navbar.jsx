@@ -186,7 +186,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, currentUser, setCurr
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            <Link to="/dashboard" className="hover:text-blue-600 font-medium transition-colors">
+            <Link to="/career-options" className="hover:text-blue-600 font-medium transition-colors">
               Dashboard
             </Link>
             
@@ -315,7 +315,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, currentUser, setCurr
             </div>
 
             <Link
-              to="/dashboard"
+              to="/career-options"
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors"
               onClick={closeMobileMenu}
             >

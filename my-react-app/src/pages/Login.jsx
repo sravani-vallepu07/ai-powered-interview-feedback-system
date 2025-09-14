@@ -1,5 +1,4 @@
 import { SignIn } from "@clerk/clerk-react";
-
 export default function Login() {
   return (
     <div className="flex justify-center items-start min-h-screen bg-gray-50 pt-24">
@@ -8,8 +7,8 @@ export default function Login() {
           path="/login"
           routing="path"
           signUpUrl="/register"
-          fallbackRedirectUrl="/dashboard"
-          forceRedirectUrl="/dashboard"
+          fallbackRedirectUrl="/career-options"
+          forceRedirectUrl="/career-options"
           appearance={{
             layout: {
               socialButtonsPlacement: "top",

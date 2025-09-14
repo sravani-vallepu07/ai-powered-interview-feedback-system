@@ -90,7 +90,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, currentUser, setCurr
               to="/" 
               className="text-xl sm:text-2xl font-bold text-blue-700"
             >
-              InterviewAI
+              SkillCheck AI
             </Link>
 
             {/* Desktop Navigation */}
@@ -181,7 +181,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, currentUser, setCurr
             className="text-xl sm:text-2xl font-bold text-blue-700"
             onClick={closeMobileMenu}
           >
-            InterviewAI
+            SkillCheck AI
           </Link>
 
           {/* Desktop Navigation */}

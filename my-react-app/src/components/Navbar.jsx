@@ -88,9 +88,16 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, currentUser, setCurr
             {/* Logo */}
             <Link 
               to="/" 
-              className="text-xl sm:text-2xl font-bold text-blue-700"
+              className="flex items-center space-x-2 text-xl sm:text-2xl font-bold text-blue-700"
             >
-              SkillCheck AI
+              <svg 
+                className="h-6 w-6 sm:h-7 sm:w-7" 
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              <span>SkillCheck AI</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -178,10 +185,17 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, currentUser, setCurr
           {/* Logo */}
           <Link 
             to="/" 
-            className="text-xl sm:text-2xl font-bold text-blue-700"
+            className="flex items-center space-x-2 text-xl sm:text-2xl font-bold text-blue-700"
             onClick={closeMobileMenu}
           >
-            SkillCheck AI
+            <svg 
+              className="h-6 w-6 sm:h-7 sm:w-7" 
+              fill="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            <span>SkillCheck AI</span>
           </Link>
 
           {/* Desktop Navigation */}
